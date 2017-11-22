@@ -1,6 +1,3 @@
-body{
-    background-color: #31445c;
-}
 .jumbotron{
     margin-top: 20px;
 }
@@ -24,7 +21,6 @@ h2, span{
 }
 .title{
     padding: 10px;
-    color: #fff;
     background-image: -webkit-linear-gradient(left, #31445c, #598AC7, #31445c);
     background-image: -moz-linear-gradient(left, #31445c, #598AC7, #31445c);
     background-image: -ms-linear-gradient(left, #31445c, #598AC7, #31445c);

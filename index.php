@@ -24,24 +24,132 @@
         <hr>
         <ul class="list-group">
             <li class="list-group-item"><b>1 -</b> Toute la table etudiants.</li>
+            <?php
+            include('connexion.php');
+
+            $resultat=('SELECT * FROM `etudiants` ');
+
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse)
+                echo '<p>'.$reponse->num_etu.'  nom '.$reponse->nom_etu.'  date '.$reponse->date_naiss.'  sexe '.$reponse->sexe.'</p>';
+
+            //            var_dump($donnees);
+            ?>
+
             <li class="list-group-item"><b>2 -</b> Nom, numéro et date de naissance des étudiants.</li>
+            <?php
+//            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse)
+                echo '<p>'.$reponse->num_etu.$reponse->nom_etu.$reponse->date_naiss.'</p>';
+            ?>
+
             <li class="list-group-item"><b>3 -</b> Liste des étudiantes.</li>
+            <?php
+            $resultat=("SELECT * FROM etudiants WHERE sexe = 'F'");
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse) {
+                echo '<p>' . $reponse->nom_etu . '</p>';
+            }
+            ?>
+
             <li class="list-group-item"><b>4 -</b> Liste des enseignants par ordre alphabétique des noms.</li>
+            <?php
+            $resultat=('SELECT * FROM enseignants ORDER BY nom_ens');
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse) {
+                echo '<p>' . $reponse->nom_ens .'</p>';
+            }
+            ?>
+
             <li class="list-group-item"><b>5 -</b> Liste des enseignants par grade et par ordre alphabétique décroissant des noms.</li>
+            <?php
+            $resultat=('SELECT * FROM enseignants ORDER BY nom_ens DESC');
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse) {
+                echo '<p>' . $reponse->nom_ens. ' '.$reponse->grade.'</p>';
+            }
+            ?>
             <li class="list-group-item"><b>6 -</b> Nom, grade et ancienneté des enseignants qui ont strictement plus de 2 ans d'ancienneté.</li>
+
+            <?php
+            $resultat=('SELECT * FROM enseignants WHERE anciennete>2');
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse) {
+                echo '<p>' . $reponse->nom_ens. ' '.$reponse->grade. ' '.$reponse->anciennete.'</p>';
+            }
+            ?>
+
             <li class="list-group-item"><b>7 -</b> Nom, grade et ancienneté des maîtres de conférences(MCF) qui ont 3 ans d'ancienneté ou plus.</li>
+            <?php
+            $resultat=('SELECT * FROM enseignants WHERE grade="MCF" AND anciennete>3 OR anciennete=3');
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse) {
+                echo '<p>' . $reponse->nom_ens. ' '.$reponse->grade. ' '.$reponse->anciennete.'</p>';
+            }
+            ?>
             <li class="list-group-item"><b>8 -</b> Nom et date de naissance des étudiants masculins nés après 1990.</li>
+            <?php
+            $resultat=('SELECT * FROM etudiants WHERE sexe="M" AND date_naiss>"1990-12-30"');
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse) {
+                echo '<p>' . $reponse->nom_etu. ' '.$reponse->date_naiss.'</p>';
+            }
+            ?>
+
             <li class="list-group-item"><b>9 -</b> Lignes de la table notes correspondant à une note inconnue.</li>
+            <?php
+            $resultat=('SELECT * FROM notes WHERE `note` IS NULL');
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse) {
+                echo '<p>' .$reponse->_num_etu. ' '.$reponse->_num_mat.' '.$reponse->note.'</p>';
+            }
+            ?>
+
             <li class="list-group-item"><b>10 -</b> Nom des enseignants professeurs(PR) ou associés(ASS), en utilisant l'opérateur IN.</li>
+            <?php
+            $resultat=('SELECT * FROM enseignants WHERE `grade` IN ( "PR", "ASS" )');
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse) {
+                echo '<p>' .$reponse->nom_ens.' '.$reponse->grade.'</p>';
+            }
+            ?>
+
             <li class="list-group-item"><b>11 -</b> Nom des enseignants dont le nom ou le prénom contiennent un J.</li>
+            <?php
+            $resultat=('SELECT nom_ens FROM enseignants WHERE nom_ens LIKE ("%J%")');
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse) {
+                echo '<p>' .$reponse->nom_ens.'</p>';
+            }
+            ?>
+
             <li class="list-group-item"><b>12 -</b> Nom et date de naissance des étudiants nés en 1990.</li>
+            <?php
+            $resultat=('SELECT * FROM etudiants WHERE date_naiss BETWEEN "1990-01-01" AND "1990-12-31"');
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse) {
+                echo '<p>' . $reponse->nom_etu.' '.$reponse->date_naiss.'</p>';
+            }
+
+            ?>
             <li class="list-group-item"><b>13 -</b> Nom et âge (en années) des étudiants de 23 ans ou plus.</li>
+            <?php
+            $resultat=('SELECT nom_etu, YEAR (date_naiss) AS age FROM etudiants WHERE YEAR (CURRENT_DATE) - YEAR date_naiss >=23');
+            $donnees = getResult($resultat);
+            foreach ($donnees as $reponse) {
+                echo '<p>' . $reponse->age . ' '.$reponse->nom_etu.'</p>';
+            }
+            ?>
+
         </ul>
         <hr>
         <h2 class="title" ><b>2 - Jointures</b></h2>
         <hr>
         <ul class="list-group">
             <li class="list-group-item"><b>1 -</b> Notes obtenues par l'étudiant Dupont, Charles.</li>
+            <?php
+            $resulat=('SELECT * FROM etudiants INNER JOIN notes ON nom_etu = note')
+            ?>
             <li class="list-group-item"><b>2 -</b> Note obtenue par l'étudiant Dupont, Charles en G.P.A.O.</li>
             <li class="list-group-item"><b>3 -</b> Nom et date de naissance des étudiants plus jeunes(en années) que l'étudiant Dupont, Charles.</li>
             <li class="list-group-item"><b>4 -</b> Nom des étudiants ayant eu la moyenne dans une des matières enseignées par Simon, Etienne.</li>
@@ -80,4 +188,3 @@
 
 </body>
 </html>
-
